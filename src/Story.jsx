@@ -617,7 +617,15 @@ export default function Story() {
 
         <section className="section-2">
           <div className="section-2-head">
-            <h1>Read their stories</h1>
+            <h1>
+              Read{" "}
+              {search.length > 0
+                ? search
+                : selectedValue
+                ? selectedValue
+                : check}{" "}
+              stories
+            </h1>
 
             <div className="looking">
               <div className="choose">
