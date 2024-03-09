@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
 import { BiChevronDown } from "react-icons/bi";
 import { BsPen, BsArrowLeft } from "react-icons/bs";
@@ -69,6 +69,17 @@ export default function Story() {
   const [reveal, setReveal] = useState({});
 
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  const closeDropdown = useRef(null);
+  useEffect(() => {
+    const closeDropdown = (e) => {
+      if (!btnRef.current.contains(e.target)) {
+        setIsOpen(false);
+      }
+    };
+    document.body.addEventListener("click", closeDropdown);
+    return () => document.body.removeEventListener("click", closeDropdown);
+  }, []);
 
   useEffect(() => {
     onValue(cat, function (snapshot) {
@@ -628,7 +639,7 @@ export default function Story() {
             </h1>
 
             <div className="looking">
-              <div className="choose">
+              <div className="choose" ref={closeDropdown}>
                 <label htmlFor="choose">
                   <h3>What are you looking for?</h3>
                 </label>
