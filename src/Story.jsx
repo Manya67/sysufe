@@ -356,50 +356,27 @@ export default function Story() {
   }
 
   useEffect(() => {
-    if (selectedValue) {
+    if (search || selectedValue || check) {
+      const changedParameter = search
+        ? search
+        : selectedValue
+        ? selectedValue
+        : check;
       onValue(
-        ref(database, `List/${selectedValue.toUpperCase()}`),
+        ref(database, `List/${changedParameter.toUpperCase()}`),
         function (snapshot) {
           if (snapshot.exists()) {
             setStories(Object.entries(snapshot.val()).length);
             setMappable(Object.entries(snapshot.val()));
+          } else {
+            setStories(0);
+            setMappable([]);
           }
         }
       );
     }
     setReveal({});
-  }, [selectedValue]);
-
-  useEffect(() => {
-    if (check) {
-      onValue(
-        ref(database, `List/${check.toUpperCase()}`),
-        function (snapshot) {
-          if (snapshot.exists()) {
-            setStories(Object.entries(snapshot.val()).length);
-            setMappable(Object.entries(snapshot.val()));
-          }
-        }
-      );
-    }
-
-    setReveal({});
-  }, [check]);
-
-  useEffect(() => {
-    if (search) {
-      onValue(
-        ref(database, `List/${search.toUpperCase()}`),
-        function (snapshot) {
-          if (snapshot.exists()) {
-            setStories(Object.entries(snapshot.val()).length);
-            setMappable(Object.entries(snapshot.val()));
-          }
-        }
-      );
-    }
-    setReveal({});
-  }, [search]);
+  }, [selectedValue, search, check]);
 
   function showContent() {
     setContent((prev) => !prev);
