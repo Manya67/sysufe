@@ -681,6 +681,18 @@ export default function Story() {
                   </ul>
                 )
               )}
+              <div className="flex-filter">
+                <h2 className="filter-heading">
+                  Sort:
+                  <span onClick={handleflip}>
+                    {flipped ? `Newest to Oldest` : `Oldest to Newest`}
+                  </span>
+                </h2>
+                <CgArrowsExchangeAltV
+                  className="filterarrow"
+                  onClick={handleflip}
+                />
+              </div>
             </div>
           </div>
 
@@ -695,18 +707,6 @@ export default function Story() {
               </span>{" "}
               for you to read
             </h1>
-            <div className="flex-filter">
-              <h2 className="filter-heading">
-                Sort:
-                <span onClick={handleflip}>
-                  {flipped ? `Newest to Oldest` : `Oldest to Newest`}
-                </span>
-              </h2>
-              <CgArrowsExchangeAltV
-                className="filterarrow"
-                onClick={handleflip}
-              />
-            </div>
           </div>
 
           {windowWidth > 425 ? (
