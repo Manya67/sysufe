@@ -555,7 +555,9 @@ textarea {
   gap: 2px;
   width: auto;
 }
-
+.fav-icon-true {
+  color: rgb(216, 216, 8);
+}
 .flex-filter {
   display: flex;
   align-items: center;

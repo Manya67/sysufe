@@ -23,6 +23,8 @@ import {
 } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
 import { toast } from "react-hot-toast";
 import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { addItems, removeItems } from "./slice/FavSlice";
 
 const appSetting = {
   databaseURL: "https://sysu-fe-default-rtdb.firebaseio.com/",
@@ -76,8 +78,39 @@ export default function Story() {
 
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [linkHover, setLinkHover] = useState(false);
+  const favCat = useSelector((store) => store.favSlice.items);
+  const [fav, setFav] = useState(false);
+
+  const dispatch = useDispatch();
   const closeDropdownref = useRef(null);
   const barUrl = window.location.href;
+
+  const addToFav = () => {
+    const value =
+      search.length > 0 ? search : selectedValue ? selectedValue : check;
+    if (!favCat.includes(value)) {
+      toast.success("Added to favourites");
+      dispatch(addItems(value));
+    }
+  };
+
+  const dltFav = () => {
+    const value =
+      search.length > 0 ? search : selectedValue ? selectedValue : check;
+    if (favCat.includes(value)) {
+      toast.success("Deleted from favourites");
+      dispatch(removeItems(value));
+    }
+  };
+  const handleFavClick = () => {
+    if (fav) {
+      dltFav();
+      setFav(false);
+    } else {
+      addToFav();
+      setFav(true);
+    }
+  };
   useEffect(() => {
     if (urlCategory) {
       setSelectedValue(urlCategory.id.toUpperCase());
@@ -385,6 +418,9 @@ export default function Story() {
           }
         }
       );
+      if (favCat.includes(changedParameter)) {
+        setFav(true);
+      } else setFav(false);
     }
     setReveal({});
   }, [selectedValue, search, check]);
@@ -684,7 +720,14 @@ export default function Story() {
                 )
               )}
               <div className="sort-filter">
-                <MdOutlineStar />
+                <div
+                  className={`${fav ? "fav-icon-true" : ""}`}
+                  onClick={() => {
+                    handleFavClick();
+                  }}
+                >
+                  <MdOutlineStar />
+                </div>
                 <div
                   onMouseEnter={() => setLinkHover(true)}
                   onMouseLeave={() => setLinkHover(false)}
