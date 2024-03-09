@@ -721,18 +721,8 @@ export default function Story() {
           </div>
 
           {windowWidth > 425 ? (
-            <div>
-              {selectedValue && (
-                <div className="container">
-                  <section className="item-section-main">
-                    <div className="item-section-container">
-                      {check && mappable && sorted(mappable)}
-                    </div>
-                  </section>
-                </div>
-              )}
-
-              {(!menu || search.length === 0) && (
+            <div className="stories-div">
+              {(selectedValue || !menu || search.length === 0) && (
                 <div className="container">
                   <section className="item-section-main">
                     <div className="item-section-container">

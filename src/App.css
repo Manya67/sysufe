@@ -400,6 +400,9 @@ textarea {
   margin-top: -4.2rem;
   margin-right: 0.5rem;
 }
+.stories-div {
+  width: 100%;
+}
 
 .container {
   width: 100%;
@@ -563,7 +566,6 @@ textarea {
 }
 
 .show-para > p {
-  max-height: 100px;
   overflow-y: auto;
   margin: 0;
 }
