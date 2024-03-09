@@ -18,6 +18,7 @@ import {
   push,
   onValue,
 } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
+import { toast } from "react-hot-toast";
 
 const appSetting = {
   databaseURL: "https://sysu-fe-default-rtdb.firebaseio.com/",
@@ -205,6 +206,7 @@ export default function Story() {
         }
         clear();
       }
+      toast.success("Your story got published!");
     }
 
     // setContent(false)

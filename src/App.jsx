@@ -1,19 +1,17 @@
+import { Toaster } from "react-hot-toast";
+import Navbar from "./Navbar";
+import Popular from "./Popular";
+import Story from "./Story";
 
-import Navbar from "./Navbar"
-import Popular from "./Popular"
-import Story from "./Story"
-
-function App(){
+function App() {
   return (
     <div className="header">
-      <Navbar/>
+      <Navbar />
       {/* <Popular /> */}
       <Story />
+      <Toaster />
     </div>
-  )
+  );
 }
 
-export default App
-
-
-
+export default App;
