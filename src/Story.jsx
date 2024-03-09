@@ -71,11 +71,12 @@ export default function Story() {
 
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
-  const closeDropdown = useRef(null);
+  const closeDropdownref = useRef(null);
   useEffect(() => {
     const closeDropdown = (e) => {
-      if (!btnRef.current.contains(e.target)) {
-        setIsOpen(false);
+      if (!closeDropdownref.current.contains(e.target)) {
+        setShow3(false);
+        setShow4(false);
       }
     };
     document.body.addEventListener("click", closeDropdown);
@@ -641,7 +642,7 @@ export default function Story() {
             </h1>
 
             <div className="looking">
-              <div className="choose" ref={closeDropdown}>
+              <div className="choose" ref={closeDropdownref}>
                 <label htmlFor="choose">
                   <h3>What are you looking for?</h3>
                 </label>
