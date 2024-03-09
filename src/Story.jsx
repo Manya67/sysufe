@@ -4,6 +4,9 @@ import { BiChevronDown } from "react-icons/bi";
 import { BsPen, BsArrowLeft } from "react-icons/bs";
 import Popular from "./Popular";
 import { CgArrowsExchangeAltV } from "react-icons/cg";
+import { MdOutlineStar } from "react-icons/md";
+import { IoIosLink } from "react-icons/io";
+import { MdContentCopy } from "react-icons/md";
 
 import SwiperCore, { EffectCoverflow } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -19,6 +22,7 @@ import {
   onValue,
 } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
 import { toast } from "react-hot-toast";
+import { useParams } from "react-router-dom";
 
 const appSetting = {
   databaseURL: "https://sysu-fe-default-rtdb.firebaseio.com/",
@@ -39,6 +43,7 @@ let initialCategories = [
 ];
 
 export default function Story() {
+  const urlCategory = useParams();
   const [swiper, setSwiper] = useState(null);
 
   const [subject, setSubject] = useState("");
@@ -70,8 +75,14 @@ export default function Story() {
   const [reveal, setReveal] = useState({});
 
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-
+  const [linkHover, setLinkHover] = useState(false);
   const closeDropdownref = useRef(null);
+  const barUrl = window.location.href;
+  useEffect(() => {
+    if (urlCategory) {
+      setSelectedValue(urlCategory.id.toUpperCase());
+    }
+  }, []);
   useEffect(() => {
     const closeDropdown = (e) => {
       if (!closeDropdownref.current.contains(e.target)) {
@@ -672,17 +683,42 @@ export default function Story() {
                   </ul>
                 )
               )}
-              <div className="flex-filter">
-                <h2 className="filter-heading">
-                  Sort:
-                  <span onClick={handleflip}>
-                    {flipped ? `Newest to Oldest` : `Oldest to Newest`}
-                  </span>
-                </h2>
-                <CgArrowsExchangeAltV
-                  className="filterarrow"
-                  onClick={handleflip}
-                />
+              <div className="sort-filter">
+                <MdOutlineStar />
+                <div
+                  onMouseEnter={() => setLinkHover(true)}
+                  onMouseLeave={() => setLinkHover(false)}
+                  className="url"
+                >
+                  <IoIosLink />
+                  {linkHover && (
+                    <div className="url-div">
+                      <span className="url-span">{barUrl}</span>
+                      <MdContentCopy
+                        onClick={async () => {
+                          if ("clipboard" in navigator) {
+                            await navigator.clipboard.writeText(barUrl);
+                            toast.success("Copied");
+                          } else {
+                            document.execCommand("copy", true, barUrl);
+                          }
+                        }}
+                      />
+                    </div>
+                  )}
+                </div>
+                <div className="flex-filter">
+                  <h2 className="filter-heading">
+                    Sort:
+                    <span onClick={handleflip}>
+                      {flipped ? `Newest to Oldest` : `Oldest to Newest`}
+                    </span>
+                  </h2>
+                  <CgArrowsExchangeAltV
+                    className="filterarrow"
+                    onClick={handleflip}
+                  />
+                </div>
               </div>
             </div>
           </div>
