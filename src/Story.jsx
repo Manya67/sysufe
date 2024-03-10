@@ -8,7 +8,6 @@ import { MdOutlineStar } from "react-icons/md";
 import { IoIosLink } from "react-icons/io";
 import { MdContentCopy } from "react-icons/md";
 import { Tooltip, useToast } from "@chakra-ui/react";
-
 import SwiperCore, { EffectCoverflow } from "swiper";
 import "swiper/swiper-bundle.css";
 import "swiper/components/effect-coverflow/effect-coverflow.min.css";
@@ -21,7 +20,7 @@ import {
   push,
   onValue,
 } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addItems, removeItems } from "./slice/FavSlice";
 
@@ -43,6 +42,7 @@ let initialCategories = [
 ];
 
 export default function Story() {
+  const navigate = useNavigate();
   const toast = useToast();
   const urlCategory = useParams();
   const [swiper, setSwiper] = useState(null);
@@ -142,7 +142,7 @@ export default function Story() {
     if (Object.keys(urlCategory).length > 0) {
       setSelectedValue(urlCategory?.id.toUpperCase());
     }
-  }, []);
+  }, [urlCategory]);
   useEffect(() => {
     const closeDropdown = (e) => {
       if (!closeDropdownref.current.contains(e.target)) {
@@ -266,7 +266,6 @@ export default function Story() {
 
     if (subject && describe && selectedCategory) {
       push(ref(database, `List/${selectedCategory}`), Data);
-
       if (selectedCategory) {
         if (
           newCat &&
@@ -283,6 +282,7 @@ export default function Story() {
         description: "Your story got published!",
         status: "success",
       });
+      navigate(`/${selectedCategory}`);
     }
 
     // setContent(false)
@@ -427,6 +427,7 @@ export default function Story() {
         : selectedValue
         ? selectedValue
         : check;
+      navigate(`/${changedParameter}`);
       onValue(
         ref(database, `List/${changedParameter.toUpperCase()}`),
         function (snapshot) {
