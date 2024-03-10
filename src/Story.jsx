@@ -9,7 +9,6 @@ import { IoIosLink } from "react-icons/io";
 import { MdContentCopy } from "react-icons/md";
 
 import SwiperCore, { EffectCoverflow } from "swiper";
-import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/swiper-bundle.css";
 import "swiper/components/effect-coverflow/effect-coverflow.min.css";
 SwiperCore.use([EffectCoverflow]);
@@ -352,24 +351,14 @@ export default function Story() {
   }
 
   useEffect(() => {
-    if (windowWidth > 425) {
-      setReveal({});
-    } else if (windowWidth <= 425) {
-      setShow4(false);
-      setShow(false);
-    }
+    setReveal({});
   }, [windowWidth]);
 
   function togglePara(itemId) {
-    windowWidth > 425
-      ? setExpandedSections((prevExpandedSections) => ({
-          ...prevExpandedSections,
-          [itemId]: !prevExpandedSections[itemId],
-        }))
-      : setReveal((prevReveal) => ({
-          ...prevReveal,
-          [itemId]: !prevReveal[itemId],
-        }));
+    setExpandedSections((prevExpandedSections) => ({
+      ...prevExpandedSections,
+      [itemId]: !prevExpandedSections[itemId],
+    }));
   }
 
   const revealMain = {
@@ -459,20 +448,9 @@ export default function Story() {
                 <p>{item[1].slice(0, 154)}...</p>
               )}
             </div>
-            {windowWidth > 425 ? (
-              <span className="read-more" onClick={() => togglePara([item[2]])}>
-                Read more...
-              </span>
-            ) : (
-              !isRevealed && (
-                <span
-                  className="read-more"
-                  onClick={() => togglePara([item[2]])}
-                >
-                  Read more...
-                </span>
-              )
-            )}
+            <span className="read-more" onClick={() => togglePara([item[2]])}>
+              Read more...
+            </span>
           </div>
         );
       } else {
@@ -493,18 +471,9 @@ export default function Story() {
             <div className="show-para">
               <p style={isRevealed ? revealPara : {}}>{item[1]}</p>
             </div>
-            {words.length > 24 && windowWidth > 425 ? (
-              <span className="read-more" onClick={() => togglePara(item[2])}>
-                Read less
-              </span>
-            ) : (
-              words.length > 24 &&
-              !isRevealed && (
-                <span className="read-more" onClick={() => togglePara(item[2])}>
-                  Read more...
-                </span>
-              )
-            )}
+            <span className="read-more" onClick={() => togglePara(item[2])}>
+              Read less
+            </span>
           </div>
         );
       }
@@ -778,90 +747,27 @@ export default function Story() {
               for you to read
             </h1>
           </div>
-
-          {windowWidth > 425 ? (
-            <div className="stories-div">
-              {(selectedValue || !menu || search.length === 0) && (
-                <div className="container">
-                  <section className="item-section-main">
-                    <div className="item-section-container">
-                      {check && mappable && sorted(mappable)}
-                    </div>
-                  </section>
-                </div>
-              )}
-
-              {search.length > 0 && menu && (
-                <div className="container">
-                  <section className="item-section-main">
-                    <div className="item-section-container">
-                      {sorted(mappable)}
-                    </div>
-                  </section>
-                </div>
-              )}
-            </div>
-          ) : (
-            <div className="container">
-              <section className="item-section-main">
-                <Swiper
-                  effect="coverflow"
-                  // grabCursor='true'
-                  centeredSlides="true"
-                  slidesPerView={3}
-                  coverflowEffect={{
-                    rotate: 0,
-                    stretch: 0,
-                    depth: 200,
-                    modifier: 1,
-                    slideShadows: false,
-                  }}
-                  // onSwiper={handleSwiperInit}
-                  // onSlideChange={handleSlideChange}
-                >
-                  <div className="swiper-wrapper">
-                    {(() => {
-                      const sortedMappable = mappable.sort((a, b) => {
-                        const dateA = new Date(
-                          formattedDate2(Object.values(a[1])[4])
-                        );
-                        const dateB = new Date(
-                          formattedDate2(Object.values(b[1])[4])
-                        );
-
-                        if (dateA < dateB) {
-                          return flipped ? 1 : -1;
-                        }
-
-                        if (dateA > dateB) {
-                          return flipped ? -1 : 1;
-                        }
-
-                        const timeA = formattedTime(Object.values(a[1])[4]);
-                        const timeB = formattedTime(Object.values(b[1])[4]);
-
-                        if (timeA < timeB) {
-                          return flipped ? 1 : -1;
-                        }
-                        if (timeA > timeB) {
-                          return flipped ? -1 : 1;
-                        }
-                      });
-
-                      return sortedMappable.map((items, index) => {
-                        const random = Math.random() * 4;
-                        return (
-                          <SwiperSlide key={random} className="swiper-slide">
-                            {paragraph(Object.values(items[1]))}
-                          </SwiperSlide>
-                        );
-                      });
-                    })()}
+          <div className="stories-div">
+            {(selectedValue || !menu || search.length === 0) && (
+              <div className="container">
+                <section className="item-section-main">
+                  <div className="item-section-container">
+                    {check && mappable && sorted(mappable)}
                   </div>
-                </Swiper>
-              </section>
-            </div>
-          )}
+                </section>
+              </div>
+            )}
+
+            {search.length > 0 && menu && (
+              <div className="container">
+                <section className="item-section-main">
+                  <div className="item-section-container">
+                    {sorted(mappable)}
+                  </div>
+                </section>
+              </div>
+            )}
+          </div>
         </section>
       </div>
     </div>
