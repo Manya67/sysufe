@@ -7,6 +7,7 @@ import { CgArrowsExchangeAltV } from "react-icons/cg";
 import { MdOutlineStar } from "react-icons/md";
 import { IoIosLink } from "react-icons/io";
 import { MdContentCopy } from "react-icons/md";
+import { Tooltip, useToast } from "@chakra-ui/react";
 
 import SwiperCore, { EffectCoverflow } from "swiper";
 import "swiper/swiper-bundle.css";
@@ -20,7 +21,6 @@ import {
   push,
   onValue,
 } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
-import { toast } from "react-hot-toast";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addItems, removeItems } from "./slice/FavSlice";
@@ -43,6 +43,7 @@ let initialCategories = [
 ];
 
 export default function Story() {
+  const toast = useToast();
   const urlCategory = useParams();
   const [swiper, setSwiper] = useState(null);
 
@@ -82,12 +83,36 @@ export default function Story() {
   const dispatch = useDispatch();
   const closeDropdownref = useRef(null);
   const barUrl = window.location.href;
-
+  const copyUrl = (
+    <div className="url">
+      {barUrl}
+      <span>
+        <MdContentCopy
+          onClick={async () => {
+            if ("clipboard" in navigator) {
+              await navigator.clipboard.writeText(barUrl);
+              toast({
+                position: "top",
+                description: "Copied",
+                status: "success",
+              });
+            } else {
+              document.execCommand("copy", true, barUrl);
+            }
+          }}
+        />
+      </span>
+    </div>
+  );
   const addToFav = () => {
     const value =
       search.length > 0 ? search : selectedValue ? selectedValue : check;
     if (!favCat.includes(value)) {
-      toast.success("Added to favourites");
+      toast({
+        position: "top",
+        description: "Added to favourites",
+        status: "success",
+      });
       dispatch(addItems(value));
     }
   };
@@ -96,7 +121,11 @@ export default function Story() {
     const value =
       search.length > 0 ? search : selectedValue ? selectedValue : check;
     if (favCat.includes(value)) {
-      toast.success("Deleted from favourites");
+      toast({
+        position: "top",
+        description: "Deleted from favourites",
+        status: "success",
+      });
       dispatch(removeItems(value));
     }
   };
@@ -249,7 +278,11 @@ export default function Story() {
         }
         clear();
       }
-      toast.success("Your story got published!");
+      toast({
+        position: "top",
+        description: "Your story got published!",
+        status: "success",
+      });
     }
 
     // setContent(false)
@@ -637,13 +670,12 @@ export default function Story() {
         <section className="section-2">
           <div className="section-2-head">
             <h1>
-              Read{" "}
+              Read stories on{" "}
               {search.length > 0
                 ? search
                 : selectedValue
                 ? selectedValue
                 : check}{" "}
-              stories
             </h1>
 
             <div className="looking">
@@ -709,27 +741,18 @@ export default function Story() {
                 >
                   <MdOutlineStar />
                 </div>
-                <div
-                  onMouseEnter={() => setLinkHover(true)}
-                  onMouseLeave={() => setLinkHover(false)}
-                  className="url"
-                >
-                  <IoIosLink />
-                  {linkHover && (
-                    <div className="url-div">
-                      <span className="url-span">{barUrl}</span>
-                      <MdContentCopy
-                        onClick={async () => {
-                          if ("clipboard" in navigator) {
-                            await navigator.clipboard.writeText(barUrl);
-                            toast.success("Copied");
-                          } else {
-                            document.execCommand("copy", true, barUrl);
-                          }
-                        }}
-                      />
-                    </div>
-                  )}
+                <div>
+                  <Tooltip
+                    label={copyUrl}
+                    hasArrow
+                    bg="#6b5023"
+                    closeDelay={2000}
+                    pointerEvents={"all"}
+                  >
+                    <span>
+                      <IoIosLink />
+                    </span>
+                  </Tooltip>
                 </div>
                 <div className="flex-filter">
                   <h2 className="filter-heading">
