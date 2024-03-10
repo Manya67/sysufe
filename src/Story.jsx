@@ -42,9 +42,9 @@ let initialCategories = [
 ];
 
 export default function Story() {
-  const navigate = useNavigate();
-  const toast = useToast();
-  const urlCategory = useParams();
+  const navigate = useNavigate(); // using navigation to redirect the url
+  const toast = useToast(); // using toast from chakra ui
+  const urlCategory = useParams(); // getting id from url
   const [swiper, setSwiper] = useState(null);
 
   const [subject, setSubject] = useState("");
@@ -76,18 +76,19 @@ export default function Story() {
   const [reveal, setReveal] = useState({});
 
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const [linkHover, setLinkHover] = useState(false);
-  const favCat = useSelector((store) => store.favSlice.items);
-  const [fav, setFav] = useState(false);
-  const [popularList, setPopularList] = useState([]);
+  const favCat = useSelector((store) => store.favSlice.items); // getting fav categories from local
+  const [fav, setFav] = useState(false); // check if current category is fav or not
+  const [popularList, setPopularList] = useState([]); // list for popular topics
   const dispatch = useDispatch();
-  const closeDropdownref = useRef(null);
-  const barUrl = window.location.href;
+  const closeDropdownref = useRef(null); // using the ref for closing the drop down
+  const barUrl = window.location.href; // getting the id from bar url
+  // component to show in hover over share link icon
   const copyUrl = (
     <div className="url">
       {barUrl}
       <span>
         <MdContentCopy
+          //copying the content on click
           onClick={async () => {
             if ("clipboard" in navigator) {
               await navigator.clipboard.writeText(barUrl);
@@ -104,6 +105,8 @@ export default function Story() {
       </span>
     </div>
   );
+
+  // function to add category into fav list
   const addToFav = () => {
     const value =
       search.length > 0 ? search : selectedValue ? selectedValue : check;
@@ -117,6 +120,7 @@ export default function Story() {
     }
   };
 
+  // function to delete category from fav list
   const dltFav = () => {
     const value =
       search.length > 0 ? search : selectedValue ? selectedValue : check;
@@ -129,7 +133,9 @@ export default function Story() {
       dispatch(removeItems(value));
     }
   };
+
   const handleFavClick = () => {
+    // function called when clicked on start
     if (fav) {
       dltFav();
       setFav(false);
@@ -138,11 +144,15 @@ export default function Story() {
       setFav(true);
     }
   };
+
+  // updating the value when url changed
   useEffect(() => {
     if (Object.keys(urlCategory).length > 0) {
       setSelectedValue(urlCategory?.id.toUpperCase());
     }
   }, [urlCategory]);
+
+  // for the closing of dropdown
   useEffect(() => {
     const closeDropdown = (e) => {
       if (!closeDropdownref.current.contains(e.target)) {
@@ -277,11 +287,13 @@ export default function Story() {
         }
         clear();
       }
+      // notifying when story got published
       toast({
         position: "top",
         description: "Your story got published!",
         status: "success",
       });
+      // navigating so url can be changed
       navigate(`/${selectedCategory}`);
     }
 
@@ -383,10 +395,12 @@ export default function Story() {
   }
 
   useEffect(() => {
+    // removed the window width check
     setReveal({});
   }, [windowWidth]);
 
   function togglePara(itemId) {
+    // removed the window width check
     setExpandedSections((prevExpandedSections) => ({
       ...prevExpandedSections,
       [itemId]: !prevExpandedSections[itemId],
@@ -421,6 +435,9 @@ export default function Story() {
   }
 
   useEffect(() => {
+    // instead of three useEffect --> one useEffect
+    // using all three changing parameter together
+    // priority : search > selectedValue > check
     if (search || selectedValue || check) {
       const changedParameter = search
         ? search
@@ -435,6 +452,7 @@ export default function Story() {
             setStories(Object.entries(snapshot.val()).length);
             setMappable(Object.entries(snapshot.val()));
           } else {
+            // added else when no story found for selected category
             setStories(0);
             setMappable([]);
           }
@@ -448,11 +466,14 @@ export default function Story() {
   }, [selectedValue, search, check]);
 
   useEffect(() => {
+    // calling the all list from database for popular list
     onValue(ref(database, `List`), function (snapshot) {
       const newMap = new Map();
+      // getting the entries
       Object.entries(snapshot.val()).map((entry) => {
         newMap.set(entry[0], Object.entries(entry[1]).length);
       });
+      // sorting them in desc order on basis of value
       const mapSort1 = new Array(
         [...newMap.entries()].sort((a, b) => b[1] - a[1])
       );
@@ -517,7 +538,7 @@ export default function Story() {
             <div className="show-para">
               <p style={isRevealed ? revealPara : {}}>{item[1]}</p>
             </div>
-
+            {/* using same layouts for mobile view, changed the condition */}
             {words.length > 24 && (
               <span className="read-more" onClick={() => togglePara(item[2])}>
                 Read less
@@ -565,6 +586,7 @@ export default function Story() {
 
   return (
     <div className="flex">
+      {/* passing one more parameter for list  */}
       <Popular onChildValue={handleChildValue} list={popularList} />
       <div className="story-section">
         <form className="section-1">
@@ -673,6 +695,7 @@ export default function Story() {
 
         <section className="section-2">
           <div className="section-2-head">
+            {/* changed read thier stories -> read stories on category */}
             <h1>
               Read stories on{" "}
               {search.length > 0
@@ -699,18 +722,8 @@ export default function Story() {
                 <BiChevronDown className="btn-2" onClick={handleClick2} />
               </div>
 
-              {show4 ? (
-                <ul className="search-list search-list-2">
-                  {initialCategories.map((category) => (
-                    <li
-                      key={category}
-                      onClick={() => handleCategorySelect2(category)}
-                    >
-                      {category}
-                    </li>
-                  ))}
-                </ul>
-              ) : show3 && search.length === 0 ? (
+              {/* merged two same call */}
+              {show4 || (show3 && search.length === 0) ? (
                 <ul className="search-list search-list-2">
                   {initialCategories.map((category) => (
                     <li
@@ -737,6 +750,7 @@ export default function Story() {
                 )
               )}
               <div className="sort-filter">
+                {/* fav icon */}
                 <div
                   className={`${fav ? "fav-icon-true" : ""}`}
                   onClick={() => {
@@ -745,19 +759,21 @@ export default function Story() {
                 >
                   <MdOutlineStar />
                 </div>
+                {/* share icon */}
                 <div>
                   <Tooltip
                     label={copyUrl}
                     hasArrow
-                    bg="#6b5023"
                     closeDelay={2000}
                     pointerEvents={"all"}
+                    bg="#6b5023"
                   >
                     <span>
                       <IoIosLink />
                     </span>
                   </Tooltip>
                 </div>
+                {/* moved sorting down to select category */}
                 <div className="flex-filter">
                   <h2 className="filter-heading">
                     Sort:
@@ -787,6 +803,7 @@ export default function Story() {
             </h1>
           </div>
           <div className="stories-div">
+            {/* merged two same code*/}
             {(selectedValue || !menu || search.length === 0) && (
               <div className="container">
                 <section className="item-section-main">

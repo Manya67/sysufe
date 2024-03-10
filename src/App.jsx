@@ -9,7 +9,9 @@ function App() {
   return (
     <>
       <ChakraProvider>
+        {/* Added chakra ui provided */}
         <Provider store={store}>
+          {/* Added redux store provided */}
           <div className="header">
             <Navbar />
             <Story />
