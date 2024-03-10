@@ -516,9 +516,12 @@ export default function Story() {
             <div className="show-para">
               <p style={isRevealed ? revealPara : {}}>{item[1]}</p>
             </div>
-            <span className="read-more" onClick={() => togglePara(item[2])}>
-              Read less
-            </span>
+
+            {words.length > 24 && (
+              <span className="read-more" onClick={() => togglePara(item[2])}>
+                Read less
+              </span>
+            )}
           </div>
         );
       }
