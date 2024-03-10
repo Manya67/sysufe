@@ -123,6 +123,7 @@ html {
   gap: 5px;
   align-items: center;
   list-style-type: none;
+  flex-wrap: wrap;
 }
 
 .list-items > li {
@@ -168,10 +169,12 @@ html {
   justify-content: center;
   width: 100%;
 }
+.section-1-head > h1 {
+  width: 428px;
+}
 
 .section-1-head > h1,
 .section-2-head > h1 {
-  width: 428px;
   margin-top: 29px;
   font-family: var(--ff-lancelot);
   font-style: normal;
@@ -407,7 +410,9 @@ textarea {
 .container {
   width: 100%;
 }
-
+.single-items {
+  width: 100%;
+}
 .item-section {
   width: 100%;
   display: flex;
@@ -434,7 +439,7 @@ textarea {
   align-items: flex-start;
   justify-content: flex-start;
   overflow-x: hidden;
-  overflow-y: auto !important;
+  overflow-y: scroll !important;
   overscroll-behavior-inline: contain;
   height: 425px;
 }
@@ -600,11 +605,12 @@ textarea {
   width: 469px;
 }
 
-@media screen and (max-width: 1024px) {
+@media screen and (max-width: 1024px) and (min-width: 769px) {
   .list-items {
     width: 100%;
     padding: 0 20px;
     justify-content: center;
+    flex-wrap: wrap;
   }
 
   .list-items > li {
@@ -705,7 +711,171 @@ textarea {
     height: 450px;
   }
 }
-
+@media screen and (max-width: 768px) {
+  .navbar {
+    margin-top: 1.85rem;
+  }
+  .nav-header > h4 {
+    font-size: 1rem;
+    line-height: 18px;
+  }
+  .story-header {
+    font-size: 2rem;
+    line-height: 56px;
+  }
+  .list-items > li,
+  .item-category > h3,
+  .item-category > p {
+    font-size: 0.5rem;
+    line-height: 10px;
+    padding: 4px;
+  }
+  .story-section {
+    padding: 0 12px;
+    gap: 8px;
+  }
+  .section-1-head > h1 {
+    margin-top: 8px;
+    width: 250px;
+    font-size: 2rem;
+    line-height: 30px;
+  }
+  .section-1-head > h1::after,
+  .section-2-head > h1::after {
+    width: 210px;
+    margin-top: -5px;
+  }
+  .section-1-content {
+    max-width: 280px;
+  }
+  .section-1-head > h1::after {
+    margin-top: -4px;
+  }
+  .subject,
+  .description,
+  .selectCategory {
+    width: 280px;
+  }
+  .subject > label > h3,
+  .description > label > h3,
+  .choose > label > h3 {
+    font-size: 1rem;
+  }
+  .subject > input,
+  textarea,
+  .choose > input {
+    font-size: 1rem;
+    line-height: 18px;
+    width: 100%;
+    margin-top: 0;
+    margin-bottom: 18px;
+    padding: 10px 12px;
+  }
+  textarea {
+    height: 50px;
+  }
+  .select-btn {
+    width: 280px;
+    padding: 10px 12px;
+    height: 40px;
+  }
+  .select-btn > span,
+  .down {
+    font-size: 1rem;
+    line-height: 18px;
+  }
+  .content {
+    width: 280px;
+    height: 94px;
+    padding: 6px;
+  }
+  .search-btn {
+    font-size: 1rem;
+    top: 10px;
+  }
+  .search > input {
+    padding: 8px 6px;
+    padding-left: 38px;
+    width: 260px;
+    line-height: 4px;
+  }
+  .search-list {
+    margin-top: 0;
+    width: 280px;
+    gap: 6px;
+    max-height: 50px;
+  }
+  .search-list > li {
+    font-size: 0.85rem;
+    line-height: 25px;
+  }
+  .submit-btn {
+    margin-top: 40px;
+    width: 196px;
+    height: 38px;
+    font-size: 1rem;
+    line-height: 12px;
+  }
+  .section-2 {
+    width: calc(100% - 300px);
+  }
+  .section-2-head {
+    flex-direction: column;
+  }
+  .section-2-head > h1 {
+    width: 100%;
+    margin-top: 8px;
+    font-size: 2rem;
+    line-height: 30px;
+    margin-bottom: 18px;
+  }
+  .section-2-head > h1::after {
+    margin-right: 400px;
+  }
+  .choose {
+    width: 300px;
+    margin-top: 3px;
+  }
+  .btn-2 {
+    margin-top: -3.5rem;
+  }
+  .stories-div {
+    margin-right: 10px;
+  }
+  .sort-filter {
+    font-size: 1.25rem;
+  }
+  .filter-heading {
+    font-size: 1rem;
+    line-height: 18px;
+  }
+  .filterarrow {
+    font-size: 1.25rem;
+  }
+  .total-story {
+    font-size: 1rem;
+    line-height: 12px;
+    margin: 0;
+  }
+  .item-section > h2 {
+    width: 100%;
+    font-size: 2.5rem;
+    line-height: 30px;
+  }
+  .show-para > p,
+  .read-more {
+    width: 100%;
+    font-size: 1rem;
+    line-height: 18px;
+    overflow: hidden;
+  }
+  .search-list-2 {
+    padding: 8px;
+    margin-top: 2.5rem;
+    max-height: 100px;
+    width: 300px;
+  }
+}
 @media screen and (max-width: 425px) {
   body {
     overflow-y: auto;

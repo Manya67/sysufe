@@ -112,8 +112,8 @@ export default function Story() {
     }
   };
   useEffect(() => {
-    if (urlCategory) {
-      setSelectedValue(urlCategory.id.toUpperCase());
+    if (Object.keys(urlCategory).length > 0) {
+      setSelectedValue(urlCategory?.id.toUpperCase());
     }
   }, []);
   useEffect(() => {
