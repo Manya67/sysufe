@@ -637,7 +637,7 @@ textarea {
   }
 
   .section-2-head > h1::after {
-    width: 170px;
+    width: 180px;
     margin-right: 7rem;
   }
 
@@ -1249,7 +1249,10 @@ textarea {
   }
 
   .section-1-head > h1::after {
-    right: -10px;
+    right: 80px;
+  }
+  .section-2-head > h1::after {
+    right: 60px;
   }
 
   .subject > input,
