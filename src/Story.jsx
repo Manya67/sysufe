@@ -31,7 +31,6 @@ const appSetting = {
 
 const app = initializeApp(appSetting);
 const database = getDatabase(app);
-// const List = ref(database, 'List')
 
 const cat = ref(database, "Category");
 
@@ -79,7 +78,7 @@ export default function Story() {
   const [linkHover, setLinkHover] = useState(false);
   const favCat = useSelector((store) => store.favSlice.items);
   const [fav, setFav] = useState(false);
-
+  const [popularList, setPopularList] = useState([]);
   const dispatch = useDispatch();
   const closeDropdownref = useRef(null);
   const barUrl = window.location.href;
@@ -414,6 +413,19 @@ export default function Story() {
     setReveal({});
   }, [selectedValue, search, check]);
 
+  useEffect(() => {
+    onValue(ref(database, `List`), function (snapshot) {
+      const newMap = new Map();
+      Object.entries(snapshot.val()).map((entry) => {
+        newMap.set(entry[0], Object.entries(entry[1]).length);
+      });
+      const mapSort1 = new Array(
+        [...newMap.entries()].sort((a, b) => b[1] - a[1])
+      );
+      setPopularList(mapSort1[0]);
+    });
+  }, []);
+
   function showContent() {
     setContent((prev) => !prev);
   }
@@ -516,7 +528,7 @@ export default function Story() {
 
   return (
     <div className="flex">
-      <Popular onChildValue={handleChildValue} />
+      <Popular onChildValue={handleChildValue} list={popularList} />
       <div className="story-section">
         <form className="section-1">
           <div className="section-1-head">

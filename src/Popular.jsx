@@ -1,26 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 
-export default function Popular({ onChildValue }) {
+export default function Popular({ onChildValue, list }) {
   const favCat = useSelector((store) => store.favSlice.items);
-  const popularList = [
-    "ENGINEERING DAYS",
-    "BANGALORE STORIES",
-    "GOA DIARIES",
-    "NITK STUFFS",
-    "IIM THINGS",
-    "IIMB FACTS",
-    "SHAYARI",
-    "VIKAS MEENA",
-    "ENGINEERING DAYS",
-    "BANGALORE STORIES",
-    "GOA DIARIES",
-    "NITK STUFFS",
-    "IIM THINGS",
-    "IIMB FACTS",
-    "SHAYARI",
-    "VIKAS MEENA",
-  ];
   function ListItem({ value }) {
     const handleClick = () => {
       onChildValue(value);
@@ -40,8 +22,9 @@ export default function Popular({ onChildValue }) {
               return <ListItem value={cat} key={index} />;
             })}
           {favCat.length < 10 &&
-            popularList.slice(0, 10 - favCat.length).map((cat, index) => {
-              return <ListItem value={cat} key={index} />;
+            list.slice(0, 10 - favCat.length).map((cat, index) => {
+              if (favCat && !favCat.includes(cat[0]))
+                return <ListItem value={cat[0]} key={index} />;
             })}
         </ul>
       </div>
