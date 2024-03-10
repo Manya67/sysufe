@@ -441,7 +441,7 @@ textarea {
   overflow-x: hidden;
   overflow-y: scroll !important;
   overscroll-behavior-inline: contain;
-  height: 425px;
+  height: 1550px;
 }
 
 .item-category {
@@ -604,7 +604,11 @@ textarea {
   justify-content: flex-start;
   width: 469px;
 }
-
+@media screen and (max-width: 1440px) and (min-width: 1025px) {
+  .item-section-container {
+    height: 700px;
+  }
+}
 @media screen and (max-width: 1024px) and (min-width: 769px) {
   .list-items {
     width: 100%;
@@ -708,7 +712,7 @@ textarea {
   }
 
   .item-section-container {
-    height: 450px;
+    height: 500px;
   }
 }
 @media screen and (max-width: 768px) and (min-width: 426px) {
@@ -874,6 +878,9 @@ textarea {
     margin-top: 2.5rem;
     max-height: 100px;
     width: 300px;
+  }
+  .item-section-container {
+    height: 350px;
   }
 }
 @media screen and (max-width: 425px) {
@@ -1219,6 +1226,9 @@ textarea {
     text-align: center;
     line-height: 20px;
     align-self: flex-start;
+  }
+  .item-section-container {
+    height: 350px;
   }
 }
 
